@@ -52,31 +52,6 @@ Everything here is intentionally sanitized and architecture-focused.
 
 ---
 
-## ⚡ Core Architecture Goals
-
-- tenant-scoped request processing from edge to database
-- clear separation of customer, vendor, and internal admin responsibilities
-- RBAC with module-level permission boundaries
-- RLS-backed data isolation for shared database models
-- operational audit logging and incident traceability
-- modular backend services for workflow-heavy domains
-- scalable onboarding and organization lifecycle handling
-
----
-
-## 🧩 Operational Domains
-
-This repository models generalized SaaS operational domains that commonly emerge in production systems:
-
-- vendor management workflows (catalog, status, and partner-facing operations)
-- organization administration (membership, role assignment, and governance controls)
-- internal operations tooling (support, exception handling, and workflow orchestration)
-- onboarding lifecycle management (tenant setup, workspace activation, and access bootstrapping)
-- CRM/process coordination patterns (case routing, communication trails, and task ownership)
-- analytics and reporting foundations (tenant-scoped metrics and operational visibility)
-
----
-
 ## 📸 Production UI Snapshots
 
 The following screenshots represent generalized production-inspired operational systems related to multi-tenant SaaS workflows, vendor operations, RBAC-enabled administration, and organization-aware backend tooling.
@@ -112,6 +87,31 @@ Operational tracking interface demonstrating organization-aware workflows, logis
 <p align="center">
   <img src="./assets/images/oms-partner-dashboard.png" width="100%" />
 </p>
+
+---
+
+## ⚡ Core Architecture Goals
+
+- tenant-scoped request processing from edge to database
+- clear separation of customer, vendor, and internal admin responsibilities
+- RBAC with module-level permission boundaries
+- RLS-backed data isolation for shared database models
+- operational audit logging and incident traceability
+- modular backend services for workflow-heavy domains
+- scalable onboarding and organization lifecycle handling
+
+---
+
+## 🧩 Operational Domains
+
+This repository models generalized SaaS operational domains that commonly emerge in production systems:
+
+- vendor management workflows (catalog, status, and partner-facing operations)
+- organization administration (membership, role assignment, and governance controls)
+- internal operations tooling (support, exception handling, and workflow orchestration)
+- onboarding lifecycle management (tenant setup, workspace activation, and access bootstrapping)
+- CRM/process coordination patterns (case routing, communication trails, and task ownership)
+- analytics and reporting foundations (tenant-scoped metrics and operational visibility)
 
 ---
 
