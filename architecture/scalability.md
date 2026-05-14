@@ -13,6 +13,7 @@ The architecture prioritizes:
 - scalable authorization systems
 - isolated operational domains
 - predictable infrastructure growth
+- controlled multi-portal expansion
 
 ---
 
@@ -32,7 +33,7 @@ D --> E[(PostgreSQL)]
 
 D --> F[Redis Cache]
 
-B --> G[Worker Infrastructure]
+B --> G[Job Queue and Worker Infrastructure]
 ```
 
 ---
@@ -47,6 +48,7 @@ The architecture demonstrates:
 - worker offloading
 - async operational workflows
 - scalable query boundaries
+- integration workflow isolation
 
 ---
 
@@ -60,6 +62,7 @@ Key scalability concerns include:
 - audit log volume
 - operational concurrency
 - tenant onboarding expansion
+- webhook and scheduler throughput
 
 ---
 
@@ -72,3 +75,9 @@ The architecture prioritizes:
 - infrastructure resilience
 - operational observability
 - failure isolation
+
+## ⚖️ Real-World Trade-offs
+
+- centralized monoliths reduce early complexity but need strict module boundaries as teams grow
+- in-memory rate limiting is fast but not globally consistent across instances
+- queue-backed workflows improve resiliency but add idempotency and retry complexity

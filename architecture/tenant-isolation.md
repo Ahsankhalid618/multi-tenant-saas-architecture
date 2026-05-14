@@ -1,8 +1,17 @@
 # 🏢 Tenant Isolation Architecture
 
-Multi-tenant SaaS systems must ensure strong logical separation between organizations, users, and operational data.
+Multi-tenant SaaS systems rely on explicit tenant context propagation from request entry to database access.
 
-This repository demonstrates production-inspired tenant isolation patterns designed for scalable backend infrastructure and secure multi-organization systems.
+This document captures generalized patterns for organization/workspace separation, permission boundaries, and operational safety in shared infrastructure.
+
+## 🌐 Production SaaS Context
+
+Inspired by architecture patterns commonly needed in:
+
+- [Peacock Wholesale](https://peacockwholesale.io)
+- [Peacock OMS](https://oms.peacockwholesale.io)
+
+This is intentionally sanitized and does not describe private implementations.
 
 ---
 
@@ -10,18 +19,18 @@ This repository demonstrates production-inspired tenant isolation patterns desig
 
 The architecture prioritizes:
 
-- organization-level isolation
-- tenant-scoped data access
-- secure backend boundaries
-- permission-aware query execution
-- operational separation between tenants
-- auditability and traceability
+- organization-level ownership boundaries
+- workspace-level operational segmentation
+- tenant-scoped query construction
+- secure boundaries between vendor/admin/customer surfaces
+- auditability for privileged operations
+- safe cross-tenant reporting controls
 
 ---
 
 # 🧠 Isolation Model
 
-Each request is resolved within an explicit tenant context.
+Each request is resolved inside an explicit tenant envelope.
 
 ```mermaid
 flowchart TD
@@ -29,32 +38,35 @@ flowchart TD
 A[Authenticated User]
 --> B[Organization Context]
 
-B --> C[Tenant Resolver]
+B --> C[Workspace and Membership Resolver]
 
 C --> D[Scoped Authorization]
 
-D --> E[Tenant-Aware Queries]
+D --> E[Tenant-Aware Service Execution]
 
-E --> F[(PostgreSQL)]
+E --> F[Policy-Constrained Queries]
+
+F --> G[(PostgreSQL)]
 ```
 
 ---
 
 # 🔒 Tenant-Aware Querying
 
-All backend operations must include:
+Every backend operation should carry:
 
 - organization context
-- tenant-scoped identifiers
-- RBAC permission validation
-- RLS enforcement
+- workspace or module scope
+- actor identity and role claims
+- app-layer authorization checks
+- policy-backed data constraints
 
-Example constraints:
+Common constraints:
 
-- users can only access assigned organizations
-- vendor accounts only access vendor-scoped data
-- internal roles operate within authorized domains
-- admin operations are audit-logged
+- users can operate only within active memberships
+- vendor-facing actors cannot access internal operator modules
+- internal operators are restricted by module scopes, not just login state
+- high-risk actions emit audit events with tenant context
 
 ---
 
@@ -62,11 +74,11 @@ Example constraints:
 
 The architecture demonstrates:
 
-- shared database / isolated tenant rows
-- organization-scoped queries
-- RLS-based protection
-- scoped API boundaries
-- workspace-aware authorization
+- shared database with strict tenant filters
+- route-domain segregation for role audiences
+- membership-driven permission resolution
+- RLS enforcement for tenant-owned data paths
+- explicit privileged paths for operational workflows
 
 ---
 
@@ -74,8 +86,14 @@ The architecture demonstrates:
 
 Tenant isolation enables:
 
-- scalable SaaS onboarding
-- secure organization expansion
-- permission-aware workflows
-- operational safety
-- scalable backend modularity
+- predictable onboarding and expansion
+- safer organizational growth without schema duplication
+- clearer blast-radius containment during incidents
+- reusable service modules with tenant-safe defaults
+- maintainable authorization as roles and workflows evolve
+
+## ⚖️ Trade-offs
+
+- stricter isolation increases authorization complexity
+- policy-heavy systems require deeper testing and observability
+- tenant-scoped analytics can become expensive without data modeling discipline

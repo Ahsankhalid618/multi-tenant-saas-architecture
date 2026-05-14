@@ -13,6 +13,7 @@ The audit logging layer provides:
 - operational traceability
 - security event monitoring
 - backend accountability
+- incident reconstruction support
 
 ---
 
@@ -28,9 +29,11 @@ B --> C[Business Logic]
 
 C --> D[Audit Event Creation]
 
-D --> E[(Audit Log Storage)]
+D --> E[Redaction and Classification]
 
-E --> F[Operational Visibility]
+E --> F[(Audit Log Storage)]
+
+F --> G[Operational Visibility]
 ```
 
 ---
@@ -42,9 +45,10 @@ The architecture demonstrates logging for:
 - authentication events
 - permission changes
 - role assignments
-- organization actions
-- billing operations
-- administrative workflows
+- organization lifecycle actions
+- billing and payout workflow events
+- administrative workflow decisions
+- role and permission changes
 
 ---
 
@@ -69,3 +73,10 @@ Important considerations include:
 - scalable event storage
 - searchable operational logs
 - tenant-scoped audit queries
+- event schema evolution over time
+
+## ⚖️ Trade-offs
+
+- verbose logs help investigations but increase cost and retention pressure
+- logging too little creates blind spots for security and compliance teams
+- logging too much without masking can introduce privacy and legal risk

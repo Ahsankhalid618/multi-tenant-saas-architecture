@@ -14,6 +14,7 @@ The architecture prioritizes:
 - secure API boundaries
 - auditability
 - least-privilege access
+- explicit trust boundary separation
 
 ---
 
@@ -30,6 +31,8 @@ B --> C[RLS Enforcement]
 C --> D[Scoped Backend Access]
 
 D --> E[Audit Logging]
+
+E --> F[Incident Response and Review]
 ```
 
 ---
@@ -44,6 +47,7 @@ The architecture demonstrates:
 - role-aware APIs
 - audit logging
 - secure operational tooling
+- separated vendor and internal operator boundaries
 
 ---
 
@@ -56,6 +60,7 @@ The system supports:
 - session expiration
 - protected infrastructure actions
 - role-aware workflow execution
+- high-risk action review logging
 
 ---
 
@@ -68,3 +73,4 @@ Production-focused concerns include:
 - backend trust boundaries
 - sensitive workflow protection
 - infrastructure access controls
+- policy drift between app-layer and data-layer authorization

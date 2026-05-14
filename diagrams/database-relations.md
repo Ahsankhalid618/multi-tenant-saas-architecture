@@ -3,45 +3,71 @@
 ```mermaid
 erDiagram
 
-USERS ||--o{ ORGANIZATIONS : belongs_to
+USERS ||--o{ MEMBERSHIPS : assigned_to
 ORGANIZATIONS ||--o{ WORKSPACES : contains
-WORKSPACES ||--o{ PROJECTS : manages
-ORGANIZATIONS ||--o{ ROLES : defines
-ROLES ||--o{ PERMISSIONS : grants
-USERS ||--o{ AUDIT_LOGS : generates
+ORGANIZATIONS ||--o{ MEMBERSHIPS : governs
+MEMBERSHIPS ||--o{ ROLE_BINDINGS : has
+ROLE_BINDINGS ||--o{ PERMISSION_SCOPES : grants
+WORKSPACES ||--o{ DOMAIN_RECORDS : owns
+USERS ||--o{ AUDIT_EVENTS : triggers
+ORGANIZATIONS ||--o{ AUDIT_EVENTS : contextualizes
+WORKSPACES ||--o{ INTEGRATION_JOBS : processes
 
 USERS {
   uuid id
   string email
+  string actor_type
 }
 
 ORGANIZATIONS {
   uuid id
   string name
+  string lifecycle_state
 }
 
 WORKSPACES {
   uuid id
   string slug
+  string status
 }
 
-PROJECTS {
+MEMBERSHIPS {
   uuid id
-  string title
+  uuid user_id
+  uuid organization_id
+  string membership_state
 }
 
-ROLES {
+ROLE_BINDINGS {
   uuid id
-  string role
+  uuid membership_id
+  string role_key
+  string scope_level
 }
 
-PERMISSIONS {
+PERMISSION_SCOPES {
   uuid id
-  string permission
+  string permission_key
+  string module
 }
 
-AUDIT_LOGS {
+DOMAIN_RECORDS {
   uuid id
-  string action
+  uuid workspace_id
+  string state
+}
+
+AUDIT_EVENTS {
+  uuid id
+  string event_type
+  string risk_level
+}
+
+INTEGRATION_JOBS {
+  uuid id
+  string job_type
+  string delivery_state
 }
 ```
+
+> This ERD is intentionally conceptual. It models multi-tenant boundaries and permission relationships without exposing private production schemas.

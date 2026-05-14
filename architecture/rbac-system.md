@@ -1,6 +1,6 @@
 # 🔐 RBAC Authorization System
 
-This document explains the role-based access control patterns used throughout the multi-tenant SaaS architecture.
+This document describes production-inspired RBAC patterns for multi-tenant applications where customer, vendor, and internal operator permissions must remain clearly separated.
 
 ---
 
@@ -8,11 +8,11 @@ This document explains the role-based access control patterns used throughout th
 
 The authorization layer is designed to provide:
 
-- tenant-aware permissions
-- scoped operational access
-- organization-level roles
-- backend authorization consistency
-- secure internal tooling access
+- tenant-aware permission evaluation
+- module-scoped operational access
+- organization/workspace role bindings
+- consistent backend authorization enforcement
+- controlled privileged tooling access
 
 ---
 
@@ -24,13 +24,16 @@ flowchart TD
 A[User Request]
 --> B[Authentication]
 
-B --> C[Organization Context]
+B --> C[Tenant and Membership Resolution]
 
-C --> D[Role Resolution]
+C --> D[Role Binding Lookup]
 
-D --> E[Permission Validation]
+D --> E[Module Permission Evaluation]
 
-E --> F[Authorized Resource Access]
+E --> F{Allowed?}
+
+F -->|No| G[Deny + Audit Event]
+F -->|Yes| H[Continue to Handler + RLS]
 ```
 
 ---
@@ -39,12 +42,12 @@ E --> F[Authorized Resource Access]
 
 | Role | Access Scope |
 |---|---|
-| Admin | Full organization access |
-| Operations | Operational workflows |
-| Support | Ticketing & CRM access |
-| Vendor | Vendor-scoped resources |
-| Analyst | Analytics & reporting |
-| Finance | Billing & financial systems |
+| Tenant Owner | Organization-wide governance and role delegation |
+| Operations Manager | Day-to-day operational workflows |
+| Support Agent | Case and communication workflows |
+| Vendor Manager | Partner-scoped catalog and order tasks |
+| Finance Operator | Billing and payout module access |
+| Read-Only Analyst | Reporting and audit visibility |
 
 ---
 
@@ -53,9 +56,9 @@ E --> F[Authorized Resource Access]
 The architecture prioritizes:
 
 - least-privilege access
-- scoped permissions
-- organization-aware policies
-- backend authorization enforcement
+- deny-by-default permissions
+- organization-aware role bindings
+- backend enforcement before data access
 - auditability of privileged actions
 
 ---
@@ -64,9 +67,15 @@ The architecture prioritizes:
 
 Patterns demonstrated include:
 
-- role guards
-- permission matrices
-- scoped API authorization
-- protected admin workflows
-- backend middleware enforcement
-- tenant-aware permission resolution
+- route and handler guards
+- module-level permission matrices
+- membership-bound role assignment
+- scoped API authorization checks
+- protected internal operation workflows
+- denied-access event logging for forensic review
+
+## ⚖️ Operational Trade-offs
+
+- richer role models improve safety but increase testing surface
+- coarse roles speed onboarding but can over-grant access
+- over-fragmented permissions can slow product delivery if unmanaged

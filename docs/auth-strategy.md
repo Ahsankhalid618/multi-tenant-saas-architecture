@@ -2,6 +2,15 @@
 
 This document outlines the authentication and session management patterns used throughout the multi-tenant SaaS architecture.
 
+## 🌐 Production SaaS Context
+
+Generalized from real-world SaaS operations similar in shape to:
+
+- [Peacock Wholesale](https://peacockwholesale.io)
+- [Peacock OMS](https://oms.peacockwholesale.io)
+
+No proprietary implementation details are included.
+
 ---
 
 # ⚡ Goals
@@ -13,6 +22,7 @@ The authentication layer is designed to provide:
 - tenant-scoped access control
 - protected operational workflows
 - scalable identity management
+- clear portal boundary enforcement
 
 ---
 
@@ -30,7 +40,9 @@ C --> D[Organization Context]
 
 D --> E[RBAC Authorization]
 
-E --> F[Protected Resources]
+E --> F[Handler Authorization Guard]
+
+F --> G[Protected Resources]
 ```
 
 ---
@@ -44,6 +56,7 @@ The architecture prioritizes:
 - organization-aware sessions
 - backend session validation
 - permission-aware APIs
+- route-domain aware session handling
 
 ---
 
@@ -56,6 +69,7 @@ The repository demonstrates generalized support for:
 - organization invitations
 - session-based authorization
 - tenant-aware identity resolution
+- portal-specific login entry points
 
 ---
 
@@ -68,3 +82,4 @@ Important operational considerations include:
 - role revocation
 - organization switching
 - secure backend validation
+- session invalidation after privilege changes

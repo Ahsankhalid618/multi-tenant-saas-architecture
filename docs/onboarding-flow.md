@@ -13,6 +13,7 @@ The onboarding system is designed to provide:
 - secure workspace creation
 - role-aware invitations
 - operational consistency
+- staged activation with guardrails
 
 ---
 
@@ -45,6 +46,7 @@ The onboarding workflow includes:
 - tenant-scoped resource provisioning
 - onboarding invitations
 - operational configuration
+- compliance and verification checkpoints
 
 ---
 
@@ -56,6 +58,7 @@ The onboarding process prioritizes:
 - organization ownership validation
 - permission-aware onboarding
 - protected setup workflows
+- least-privilege defaults for first-time roles
 
 ---
 
@@ -68,3 +71,8 @@ Structured onboarding improves:
 - scalable customer onboarding
 - workspace standardization
 - backend maintainability
+
+## ⚖️ Operational Trade-offs
+
+- rigid onboarding improves safety but can increase time-to-first-value
+- flexible onboarding is faster but risks inconsistent tenant configuration
